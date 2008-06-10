@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DocumentLink Web UI
+Bundle-SymbolicName: org.nuxeo.ecm.platform.documentlink.web
+Bundle-Vendor: Nuxeo
+Require-Bundle: org.nuxeo.ecm.actions,
+ org.nuxeo.ecm.webapp.core
+Provide-Package: org.nuxeo.ecm.platform.documentlink.web
+Nuxeo-Component: OSGI-INF/documentlink-actions-contrib.xml,
+ OSGI-INF/documentlink-layouts-contrib.xml,
+ OSGI-INF/documentlink-types-contrib.xml
+Nuxeo-RequiredBy: org.nuxeo.ecm.war

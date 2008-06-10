@@ -1,0 +1,37 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:nxl="http://nuxeo.org/nxforms/layout"
+  xmlns:nxu="http://nuxeo.org/nxweb/util">
+
+<h:form enctype="multipart/form-data" id="documentlink_edit">
+
+  <nxu:methodResult name="canUseDublincore" value="#{documentLinkActions.isLayoutAvailableForEdit('dublincore')}" >
+   <c:if test="#{canUseDublincore}">
+	<nxl:layout name="dublincore" mode="edit" value="#{currentDocumentLink}" />
+  </c:if>
+  </nxu:methodResult>
+
+  <nxu:methodResult name="canUseNote" value="#{documentLinkActions.isLayoutAvailableForEdit('note')}" >
+   <c:if test="#{canUseNote}">
+	<nxl:layout name="note" mode="edit" value="#{currentDocumentLink}" />
+  </c:if>
+  </nxu:methodResult>
+
+  <nxu:methodResult name="canUseFile" value="#{documentLinkActions.isLayoutAvailableForEdit('file')}" >
+   <c:if test="#{canUseFile}">
+	<nxl:layout name="file" mode="edit" value="#{currentDocumentLink}" />
+  </c:if>
+  </nxu:methodResult>
+
+
+  <p class="buttonsGadget">
+    <h:commandButton type="submit" value="#{messages['command.save']}"
+      styleClass="button"
+      action="#{documentLinkActions.updateDocument}" />
+  </p>
+
+</h:form>
+</div>
