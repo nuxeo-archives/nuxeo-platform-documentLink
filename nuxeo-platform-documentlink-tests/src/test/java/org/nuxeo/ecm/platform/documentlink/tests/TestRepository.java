@@ -20,10 +20,8 @@
 
 package org.nuxeo.ecm.platform.documentlink.tests;
 
-import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
-import org.nuxeo.ecm.core.query.Query;
 import org.nuxeo.ecm.core.repository.jcr.testing.RepositoryOSGITestCase;
 import org.nuxeo.ecm.platform.documentrepository.api.DocRepository;
 import org.nuxeo.ecm.platform.documentrepository.api.helper.DocRepositoryHelper;

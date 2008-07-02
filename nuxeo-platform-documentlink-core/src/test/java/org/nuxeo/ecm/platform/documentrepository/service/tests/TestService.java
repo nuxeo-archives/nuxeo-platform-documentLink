@@ -3,7 +3,6 @@ package org.nuxeo.ecm.platform.documentrepository.service.tests;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.repository.jcr.testing.RepositoryOSGITestCase;
 import org.nuxeo.ecm.platform.documentrepository.api.DocRepository;
-import org.nuxeo.ecm.platform.documentrepository.api.DocRepositoryImpl;
 import org.nuxeo.ecm.platform.documentrepository.service.api.DocumentRepositoryManager;
 import org.nuxeo.ecm.platform.documentrepository.service.plugin.base.AbstractDocumentRepositoryPlugin;
 import org.nuxeo.runtime.api.Framework;
