@@ -163,16 +163,22 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
         this.target = resolveTargetDocument(proxy);
     }
 
+    public DocumentLinkAdapter save() throws ClientException
+    {
+        return save(false);
+    }
+
     /**
      * @see DocumentLinkAdapter.save
      */
-    public DocumentLinkAdapter save() throws ClientException
+    public DocumentLinkAdapter save(Boolean skipTarget) throws ClientException
     {
         String sid = getSessionId();
         CoreSession session = CoreInstance.getInstance().getSession(sid);
 
         proxy = session.saveDocument(proxy);
-        target = session.saveDocument(target);
+        if (!skipTarget)
+            target = session.saveDocument(target);
 
         // XXX : need to set "this" as adapter on proxy !!!
 

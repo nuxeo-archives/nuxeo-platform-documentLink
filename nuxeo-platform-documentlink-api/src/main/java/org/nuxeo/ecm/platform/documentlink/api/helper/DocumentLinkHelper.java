@@ -65,6 +65,16 @@ public class DocumentLinkHelper {
         return createDocumentLink(null, target, path, null);
     }
 
+
+    public static DocumentLinkAdapter createDocumentLink(
+            CoreSession documentManager, DocumentModel target, String path,
+            String DocumentLinkType) throws ClientException {
+
+        return createDocumentLink(documentManager,target,path,DocumentLinkType, true);
+    }
+
+
+
     /**
      * Creates a DocumentLink documentModel pointing to the target DocumentModel.
      *
@@ -77,7 +87,7 @@ public class DocumentLinkHelper {
      */
     public static DocumentLinkAdapter createDocumentLink(
             CoreSession documentManager, DocumentModel target, String path,
-            String DocumentLinkType) throws ClientException {
+            String DocumentLinkType, Boolean saveTarget) throws ClientException {
 
         if (documentManager == null) {
             documentManager = CoreInstance.getInstance().getSession(
@@ -103,7 +113,7 @@ public class DocumentLinkHelper {
 
         docLink.setProperty("dublincore", "title", target.getTitle() + "(Link)");
 
-        return docLink.save();
+        return docLink.save(!saveTarget);
     }
 
     /**
@@ -130,6 +140,6 @@ public class DocumentLinkHelper {
         DocumentModel target = DocRepositoryHelper.createDocumentInCentralRepository(
                 documentManager, doc);
 
-        return createDocumentLink(documentManager, target, linkPath,DocumentLinkType);
+        return createDocumentLink(documentManager, target, linkPath,DocumentLinkType,true);
     }
 }
