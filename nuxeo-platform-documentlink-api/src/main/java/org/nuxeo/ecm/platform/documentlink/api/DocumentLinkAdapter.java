@@ -61,6 +61,7 @@ public interface DocumentLinkAdapter extends DocumentModel {
      */
     boolean isBroken();
 
+
     /**
      * Saves modifications on the underlying DocumentModel.
      * Because DocumentLinkAdapter provides access transparently to two DocumentModels (the target and the link),
@@ -71,6 +72,20 @@ public interface DocumentLinkAdapter extends DocumentModel {
      * @throws ClientException the client exception
      */
     DocumentLinkAdapter save() throws ClientException;
+
+
+    /**
+     * Saves modifications on the underlying DocumentModel.
+     * Because DocumentLinkAdapter provides access transparently to two DocumentModels (the target and the link),
+     * this method is usefull to provide a unique save method.
+     *
+     * @param skipTarget : indicates if target document must be saved or not
+     *
+     * @return the document link adapter
+     *
+     * @throws ClientException the client exception
+     */
+    DocumentLinkAdapter save(Boolean skipTarget) throws ClientException;
 
     /**
      * Returns the list of schemas that are never taken from the link document but directly from the target document.     *
