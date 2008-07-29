@@ -111,6 +111,7 @@ public class DocumentLinkHelper {
 
         docLink.setTargetDocument(target);
 
+        // XXX remove title
         docLink.setProperty("dublincore", "title", target.getTitle() + "(Link)");
 
         return docLink.save(!saveTarget);
