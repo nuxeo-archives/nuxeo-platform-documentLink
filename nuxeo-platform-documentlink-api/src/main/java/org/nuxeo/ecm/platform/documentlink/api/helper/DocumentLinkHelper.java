@@ -102,8 +102,6 @@ public class DocumentLinkHelper {
         DocumentModel link = documentManager.createDocumentModel(path, link_id,
                 DocumentLinkType);
 
-        link = documentManager.createDocument(link);
-
         DocumentLinkAdapter docLink = link.getAdapter(DocumentLinkAdapter.class);
 
         if (docLink == null)
@@ -113,6 +111,10 @@ public class DocumentLinkHelper {
 
         // XXX remove title
         docLink.setProperty("dublincore", "title", target.getTitle() + "(Link)");
+
+        link = documentManager.createDocument(link);
+
+        docLink = link.getAdapter(DocumentLinkAdapter.class);
 
         return docLink.save(!saveTarget);
     }
