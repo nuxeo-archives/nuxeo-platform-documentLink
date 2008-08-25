@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<component name="org.nuxeo.ecm.platform.documentlink.indexingwrapper">
+
+  <extension target="org.nuxeo.ecm.core.search.indexingwrapper.IndexingWrapperManagerComponent" point="IndexingWrapperFactories">
+
+  <indexingWrapper name="documentLink">
+    <class>org.nuxeo.ecm.platform.documentlink.indexingwrapper.DocumentLinkIndexingWrapperFactory</class>
+    <typeName>DocumentLink</typeName>
+  </indexingWrapper>
+
+  </extension>
+
+
+</component>
