@@ -102,7 +102,7 @@ public class DocumentLinkActionBean  extends InputController implements Serializ
     {
         DocumentLinkAdapter docLink = DocumentLinkHelper.createDocumentLink(documentManager, target, path, "DocumentLink");
 
-        docLink.setProperty("dublincore", "title", target.getTitle()+ "(Link)");
+        docLink.setProperty("dublincore", "title", target.getTitle());
 
         docLink = saveDocumentLink(docLink);
 

@@ -26,6 +26,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.platform.documentlink.api.DocumentLinkAdapter;
 import org.nuxeo.ecm.platform.documentrepository.api.helper.DocRepositoryHelper;
+import org.nuxeo.ecm.platform.types.adapter.TypeInfo;
 
 /**
  *
@@ -110,7 +111,10 @@ public class DocumentLinkHelper {
         docLink.setTargetDocument(target);
 
         // XXX remove title
-        docLink.setProperty("dublincore", "title", target.getTitle() + "(Link)");
+        docLink.setProperty("dublincore", "title", target.getTitle());
+
+        // set icon path
+        docLink.setProperty("common", "icon", iconPath(target));
 
         link = documentManager.createDocument(link);
 
@@ -144,5 +148,22 @@ public class DocumentLinkHelper {
                 documentManager, doc);
 
         return createDocumentLink(documentManager, target, linkPath,DocumentLinkType,true);
+    }
+
+
+    // duplicated from DocumentModelFunction to avoid dependency
+    protected static String iconPath(DocumentModel document) {
+        String iconPath = "";
+        if (document != null) {
+            iconPath = (String) document.getProperty("common", "icon");
+            if (iconPath == null || iconPath.length() == 0
+                    || document.getType().equals("Workspace")) {
+                TypeInfo typeInfo = document.getAdapter(TypeInfo.class);
+                if (typeInfo != null) {
+                    iconPath = typeInfo.getIcon();
+                }
+            }
+        }
+        return iconPath;
     }
 }
