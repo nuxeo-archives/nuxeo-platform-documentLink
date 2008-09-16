@@ -433,7 +433,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
      * @see org.nuxeo.ecm.core.api.DocumentModel.getParentRef
      */
     public DocumentRef getParentRef() {
-        return proxy.getRef();
+        return proxy.getParentRef();
     }
 
     /**
