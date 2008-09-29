@@ -34,14 +34,15 @@ public class TestRepository extends RepositoryOSGITestCase {
         super.setUp();
         deployBundle("org.nuxeo.ecm.platform.content.template");
         deployBundle("org.nuxeo.ecm.platform.types.api");
-        deployBundle("org.nuxeo.ecm.platform.documentlink.api");
-        //deployContrib("org.nuxeo.ecm.platform.documentlink.api","OSGI-INF/documentlink-adapter-contrib.xml");
-        //deployContrib("org.nuxeo.ecm.platform.documentlink.api","OSGI-INF/repository-adapter-contrib.xml");
-        deployBundle("org.nuxeo.ecm.platform.documentlink.types");
-        //deployContrib("org.nuxeo.ecm.platform.documentlink.types","OSGI-INF/documentlink-types-contrib.xml");
+        deployBundle("org.nuxeo.ecm.platform.types.core");
+        //deployBundle("org.nuxeo.ecm.platform.documentlink.api");
+        deployContrib("org.nuxeo.ecm.platform.documentlink.api","OSGI-INF/documentlink-adapter-contrib.xml");
+        deployContrib("org.nuxeo.ecm.platform.documentlink.api","OSGI-INF/repository-adapter-contrib.xml");
+        //deployBundle("org.nuxeo.ecm.platform.documentlink.types");
+        deployContrib("org.nuxeo.ecm.platform.documentlink.types","OSGI-INF/documentlink-types-contrib.xml");
         //deployContrib("org.nuxeo.ecm.platform.documentlink.types","OSGI-INF/content-template-contrib.xml");
-        deployBundle("org.nuxeo.ecm.platform.documentlink.core");
-        //deployContrib("org.nuxeo.ecm.platform.documentlink.core","OSGI-INF/documentrepository-framework.xml");
+        //deployBundle("org.nuxeo.ecm.platform.documentlink.core");
+        deployContrib("org.nuxeo.ecm.platform.documentlink.core","OSGI-INF/documentrepository-framework.xml");
         openRepository();
     }
 

@@ -19,6 +19,11 @@
     </dependency>
 
     <dependency>
+      <groupId>org.nuxeo.ecm.platform</groupId>
+      <artifactId>nuxeo-platform-types-api</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
       <artifactId>nuxeo-core-jcr-connector-test</artifactId>
       <scope>test</scope>
