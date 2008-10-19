@@ -118,6 +118,9 @@ public abstract class AbstractDocumentRepositoryPlugin {
             base64HashedToken = Base64.encodeBytes(token.getBytes());
         }
 
+        base64HashedToken = base64HashedToken.replace("+", "X");
+        base64HashedToken = base64HashedToken.replace("/", "Y");
+
         List<String> parts = new ArrayList<String>();
         int idx = 0;
 
