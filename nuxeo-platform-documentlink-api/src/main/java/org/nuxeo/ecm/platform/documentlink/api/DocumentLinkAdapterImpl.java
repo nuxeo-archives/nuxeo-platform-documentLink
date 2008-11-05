@@ -361,11 +361,12 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
      * @see org.nuxeo.ecm.core.api.DocumentModel.getDataModelsCollection
      */
     public Collection<DataModel> getDataModelsCollection() {
-        Collection<DataModel> collec = proxy.getDataModelsCollection();
-        collec.addAll(target.getDataModelsCollection());
-        return collec;
-    }
+        List<DataModel> result = new ArrayList<DataModel>();
 
+        result.addAll(proxy.getDataModelsCollection());
+        result.addAll(target.getDataModelsCollection());
+        return result;
+    }
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.getDeclaredFacets
      */
