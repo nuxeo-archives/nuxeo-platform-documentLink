@@ -136,8 +136,8 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     {
         List<String>  unmaskedSchemas = new ArrayList<String>();
 
-        unmaskedSchemas.addAll((List<String>)Arrays.asList(target.getDeclaredSchemas()));
-        unmaskedSchemas.removeAll((List<String>)Arrays.asList(proxy.getDeclaredSchemas()));
+        unmaskedSchemas.addAll(Arrays.asList(target.getDeclaredSchemas()));
+        unmaskedSchemas.removeAll(Arrays.asList(proxy.getDeclaredSchemas()));
         unmaskedSchemas.addAll(getPassThoughtSchemas());
 
         return unmaskedSchemas;
@@ -153,7 +153,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
         if (schemas==null)
             return new ArrayList<String>();
 
-        return (List<String>)Arrays.asList(schemas);
+        return Arrays.asList(schemas);
     }
 
 
@@ -799,6 +799,15 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
      */
     public void unlock() throws ClientException {
         proxy.unlock();
+    }
+
+    public void refresh(int refreshFlags, String[] schemas)
+            throws ClientException {
+        proxy.refresh(refreshFlags, schemas);
+    }
+
+    public void refresh() throws ClientException {
+        proxy.refresh();
     }
 
 }
