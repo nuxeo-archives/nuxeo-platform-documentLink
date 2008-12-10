@@ -33,25 +33,19 @@ public class SampleDocumentRepositoryPlugin extends DefaultDocumentRepositoryPlu
     public DocRepository getDocumentRepository(CoreSession coreSession,
             DocumentModel context) throws ClientException {
 
-        DocumentModel repo = null;
-
-        String startPath=null;
-        if (context!=null && ! "/".equals(context.getPathAsString()))
-        {
-            startPath = "/" + context.getPath().segment(0).toString();
-        }
-        else
-        {
-            startPath=coreSession.getRootDocument().getPathAsString();
+        String startPath;
+        if (context != null && !"/".equals(context.getPathAsString())) {
+            startPath = "/" + context.getPath().segment(0);
+        } else {
+            startPath = coreSession.getRootDocument().getPathAsString();
         }
 
         DocumentRef repoRef = new PathRef(startPath + "/" + CENTRAL_REPOSITORY_ID);
 
-        if (!coreSession.exists(repoRef))
-        {
-            repoRef = super.createRepository(coreSession.getRepositoryName(), startPath, CENTRAL_REPOSITORY_ID);
+        if (!coreSession.exists(repoRef)) {
+            repoRef = createRepository(coreSession.getRepositoryName(), startPath, CENTRAL_REPOSITORY_ID);
         }
-        repo = coreSession.getDocument(repoRef);
+        DocumentModel repo = coreSession.getDocument(repoRef);
         return repo.getAdapter(DocRepository.class);
     }
 

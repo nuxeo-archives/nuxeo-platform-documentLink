@@ -19,8 +19,9 @@ public class DocRepositoryBean implements DocRepository {
     protected static DocRepository service;
 
     protected DocRepository getService() throws ClientException {
-        if (service == null)
+        if (service == null) {
             service = Framework.getLocalService(DocRepository.class);
+        }
 
         if (service == null) {
             throw new ClientException(
@@ -61,7 +62,6 @@ public class DocRepositoryBean implements DocRepository {
 
     public void removeDocument(DocumentRef docRef) throws ClientException {
         getService().removeDocument(docRef);
-
     }
 
 }

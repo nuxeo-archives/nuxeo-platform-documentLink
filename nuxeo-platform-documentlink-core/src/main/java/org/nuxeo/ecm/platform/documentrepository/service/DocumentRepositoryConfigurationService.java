@@ -34,6 +34,8 @@ import org.nuxeo.ecm.platform.documentrepository.service.plugin.base.DefaultDocu
 import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.ComponentName;
 import org.nuxeo.runtime.model.DefaultComponent;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class DocumentRepositoryConfigurationService extends DefaultComponent
         implements DocumentRepositoryManager {
@@ -43,9 +45,11 @@ public class DocumentRepositoryConfigurationService extends DefaultComponent
     public static final ComponentName NAME = new ComponentName(
             "org.nuxeo.ecm.platform.documentrepository.service.DocumentRepositoryConfigurationService");
 
+    private static final Log log = LogFactory.getLog(DocumentRepositoryConfigurationService.class);
+
     protected DocumentRepositoryPlugin repoPlugin;
 
-    protected Map<String, String> params = new HashMap<String, String>();
+    protected final Map<String, String> params = new HashMap<String, String>();
 
     @Override
     public void registerContribution(Object contribution,
@@ -77,8 +81,7 @@ public class DocumentRepositoryConfigurationService extends DefaultComponent
             try {
                 repoPlugin = (DocumentRepositoryPlugin) descriptor.getPluginClass().newInstance();
             } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                log.error(e);
             }
         }
 

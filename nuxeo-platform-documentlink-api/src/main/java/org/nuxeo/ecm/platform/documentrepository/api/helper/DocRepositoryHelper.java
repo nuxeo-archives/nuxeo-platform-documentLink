@@ -39,7 +39,7 @@ public class DocRepositoryHelper {
 
     private static String drmSync = "";
 
-    protected static DocumentRepositoryManager drm = null;
+    protected static DocumentRepositoryManager drm;
 
     private static DocumentRepositoryManager getDRM() throws ClientException {
         if (drm == null) {
@@ -56,7 +56,7 @@ public class DocRepositoryHelper {
     }
 
     /**
-     * get the DocRepository object given a CoreSession
+     * Gets the DocRepository object given a CoreSession.
      *
      * @param coreSession
      * @return
@@ -68,7 +68,7 @@ public class DocRepositoryHelper {
     }
 
     /**
-     * get the DocRepository in the context of a given DocumentModel
+     * Gets the DocRepository in the context of a given DocumentModel.
      * (because there may be several DocRepository)
      *
      * @param coreSession
@@ -82,7 +82,7 @@ public class DocRepositoryHelper {
     }
 
     /**
-     * Create a DocumentModel in the repository
+     * Creates a DocumentModel in the repository.
      *
      * @param coreSession
      * @param type
@@ -97,7 +97,7 @@ public class DocRepositoryHelper {
     }
 
     /**
-     * Store the given DocumentModel inside the repository
+     * Stores the given DocumentModel inside the repository.
      *
      * @param coreSession
      * @param dm
@@ -111,7 +111,7 @@ public class DocRepositoryHelper {
 
     /**
      *
-     * Create a DocumentModel in the repository that matches the context DocumentModel.
+     * Creates a DocumentModel in the repository that matches the context DocumentModel.
      *
      * @param coreSession
      * @param type
@@ -128,7 +128,7 @@ public class DocRepositoryHelper {
     }
 
     /**
-     * Store the DocumentModel in the repository that macthes the context DocumentModel
+     * Stores the DocumentModel in the repository that macthes the context DocumentModel.
      *
      * @param coreSession
      * @param dm

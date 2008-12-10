@@ -48,11 +48,8 @@ import org.nuxeo.runtime.api.Framework;
 
 @Name("documentLinkActions")
 @Scope(CONVERSATION)
-public class DocumentLinkActionBean  extends InputController implements Serializable {
+public class DocumentLinkActionBean extends InputController implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     @In(create = true)
@@ -66,10 +63,8 @@ public class DocumentLinkActionBean  extends InputController implements Serializ
 
     private transient WebLayoutManager layoutManager;
 
-    private WebLayoutManager getLayoutManager() throws Exception
-    {
-        if (layoutManager==null)
-        {
+    private WebLayoutManager getLayoutManager() throws Exception {
+        if (layoutManager == null) {
             layoutManager = Framework.getService(WebLayoutManager.class);
         }
 
@@ -81,26 +76,24 @@ public class DocumentLinkActionBean  extends InputController implements Serializ
         DocumentModel doc = navigationContext.getChangeableDocument();
         DocumentModel docLink = doc.getAdapter(DocumentLinkAdapter.class);
 
-        if (docLink!=null)
+        if (docLink != null) {
             return docLink;
+        }
         return doc;
     }
 
-    protected DocumentLinkAdapter saveDocumentLink(DocumentLinkAdapter docLink) throws ClientException
-    {
-        return  docLink.save();
+    protected DocumentLinkAdapter saveDocumentLink(DocumentLinkAdapter docLink) throws ClientException {
+        return docLink.save();
     }
 
-
-    public String createDocumentLinkInCurrentPath(DocumentModel target) throws ClientException
-    {
+    public String createDocumentLinkInCurrentPath(DocumentModel target) throws ClientException {
         String path = navigationContext.getCurrentDocument().getPathAsString();
         return createDocumentLink(target, path);
     }
 
-    public String createDocumentLink(DocumentModel target, String path) throws ClientException
-    {
-        DocumentLinkAdapter docLink = DocumentLinkHelper.createDocumentLink(documentManager, target, path, "DocumentLink");
+    public String createDocumentLink(DocumentModel target, String path) throws ClientException {
+        DocumentLinkAdapter docLink = DocumentLinkHelper.createDocumentLink(
+                documentManager, target, path, "DocumentLink");
 
         docLink.setProperty("dublincore", "title", target.getTitle());
 
@@ -112,10 +105,8 @@ public class DocumentLinkActionBean  extends InputController implements Serializ
                 resourcesAccessor.getMessages().get(
                         docLink.getType()));
         eventManager.raiseEventsOnDocumentCreate(docLink);
-        return navigationContext.navigateToDocument(docLink,"after-create");
-
+        return navigationContext.navigateToDocument(docLink, "after-create");
     }
-
 
     public String updateDocument() throws ClientException {
         try {
@@ -132,7 +123,6 @@ public class DocumentLinkActionBean  extends InputController implements Serializ
         } catch (Throwable t) {
             throw EJBExceptionHandler.wrapException(t);
         }
-
     }
 
 
@@ -140,29 +130,27 @@ public class DocumentLinkActionBean  extends InputController implements Serializ
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
 
         // XXX dummy impl !!!
-        selectItemList.add(new SelectItem("dublincore","dublincore"));
-        selectItemList.add(new SelectItem("note","note"));
-        selectItemList.add(new SelectItem("file","file"));
-        selectItemList.add(new SelectItem("files","files"));
+        selectItemList.add(new SelectItem("dublincore", "dublincore"));
+        selectItemList.add(new SelectItem("note", "note"));
+        selectItemList.add(new SelectItem("file", "file"));
+        selectItemList.add(new SelectItem("files", "files"));
 
         return selectItemList;
     }
 
-    public List<String> getAutomaticLayoutsForEdit() throws Exception
-    {
-        DocumentLinkAdapter link =  (DocumentLinkAdapter) getCurrentDocumentLink();
+    public List<String> getAutomaticLayoutsForEdit() throws Exception {
+        DocumentLinkAdapter link = (DocumentLinkAdapter) getCurrentDocumentLink();
 
         List<String> unmaskedSchemas = link.getUnmaskedSchemas();
 
-        List<String> layouts =  new ArrayList<String>();
+        List<String> layouts = new ArrayList<String>();
 
-        if (unmaskedSchemas==null)
+        if (unmaskedSchemas == null) {
             return layouts;
+        }
 
-        for (String schema : unmaskedSchemas)
-        {
-            if (getLayoutManager().getLayoutDefinition(schema)!=null)
-            {
+        for (String schema : unmaskedSchemas) {
+            if (getLayoutManager().getLayoutDefinition(schema) != null) {
                 layouts.add(schema);
             }
         }
@@ -170,8 +158,7 @@ public class DocumentLinkActionBean  extends InputController implements Serializ
         return layouts;
     }
 
-    public boolean isLayoutAvailableForEdit(String layoutName) throws Exception
-    {
+    public boolean isLayoutAvailableForEdit(String layoutName) throws Exception {
         return getAutomaticLayoutsForEdit().contains(layoutName);
     }
 }

@@ -29,29 +29,29 @@ import org.nuxeo.ecm.platform.documentrepository.api.DocRepository;
 import org.nuxeo.ecm.platform.documentrepository.service.plugin.DocumentRepositoryPlugin;
 
 /**
- *
  * Default repository plugin.
- * Only overides the getDocumentRepository method to implement a central repository logic : only one repository is available for a given core instance
+ * <p>
+ * Only overides the getDocumentRepository method to implement a central repository logic:
+ * only one repository is available for a given core instance.
  *
  * @author <a href="mailto:td@nuxeo.com">Thierry Delprat</a>
- *
  */
 public class DefaultDocumentRepositoryPlugin extends AbstractDocumentRepositoryPlugin implements
         DocumentRepositoryPlugin {
 
-    public static final String CENTRAL_REPOSITORY_ID="repository";
+    public static final String CENTRAL_REPOSITORY_ID = "repository";
 
     public DocRepository getDocumentRepository(CoreSession coreSession,
             DocumentModel context) throws ClientException {
 
-        DocumentModel repo = null;
-        DocumentRef repoRef = new PathRef(coreSession.getRootDocument().getPathAsString() + "/" + CENTRAL_REPOSITORY_ID);
+        DocumentRef repoRef = new PathRef(
+                coreSession.getRootDocument().getPathAsString() + "/" + CENTRAL_REPOSITORY_ID);
 
-        if (!coreSession.exists(repoRef))
-        {
-            repoRef = super.createRepository(coreSession.getRepositoryName(), coreSession.getRootDocument().getPathAsString(), CENTRAL_REPOSITORY_ID);
+        if (!coreSession.exists(repoRef)) {
+            repoRef = createRepository(
+                    coreSession.getRepositoryName(), coreSession.getRootDocument().getPathAsString(), CENTRAL_REPOSITORY_ID);
         }
-        repo = coreSession.getDocument(repoRef);
+        DocumentModel repo = coreSession.getDocument(repoRef);
         return repo.getAdapter(DocRepository.class);
     }
 

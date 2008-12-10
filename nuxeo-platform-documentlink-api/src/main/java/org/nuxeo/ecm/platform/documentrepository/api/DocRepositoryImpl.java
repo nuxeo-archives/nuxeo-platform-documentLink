@@ -40,15 +40,15 @@ import org.nuxeo.runtime.api.Framework;
  */
 public class DocRepositoryImpl implements DocRepository {
 
-    protected DocumentModel repo;
+    protected final DocumentModel repo;
 
-    protected transient CoreSession documentManager = null;
+    protected CoreSession documentManager;
 
     protected static Random randomGen = new Random(System.currentTimeMillis());
 
     private static String drmSync = "";
 
-    protected static DocumentRepositoryManager drm = null;
+    protected static DocumentRepositoryManager drm;
 
     public DocRepositoryImpl(DocumentModel repo) {
         this.repo = repo;
@@ -77,12 +77,14 @@ public class DocRepositoryImpl implements DocRepository {
 
     protected CoreSession getDocumentManager() {
         if (documentManager == null) {
-            if (repo == null)
+            if (repo == null) {
                 return null;
+            }
 
             String sid = repo.getSessionId();
-            if (sid == null)
+            if (sid == null) {
                 return null;
+            }
             documentManager = CoreInstance.getInstance().getSession(sid);
         }
         return documentManager;

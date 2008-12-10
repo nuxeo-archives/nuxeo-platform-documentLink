@@ -23,6 +23,7 @@ package org.nuxeo.ecm.platform.documentlink.tests;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.PathRef;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.model.DocumentPart;
 import org.nuxeo.ecm.core.repository.jcr.testing.RepositoryOSGITestCase;
 import org.nuxeo.ecm.platform.documentlink.api.DocumentLinkAdapter;
@@ -44,19 +45,18 @@ public class TestDocumentLink extends RepositoryOSGITestCase {
         deployBundle("org.nuxeo.ecm.platform.types.api");
         deployBundle("org.nuxeo.ecm.platform.types.core");
         //deployBundle("org.nuxeo.ecm.platform.documentlink.api");
-        deployContrib("org.nuxeo.ecm.platform.documentlink.api","OSGI-INF/documentlink-adapter-contrib.xml");
-        deployContrib("org.nuxeo.ecm.platform.documentlink.api","OSGI-INF/repository-adapter-contrib.xml");
+        deployContrib("org.nuxeo.ecm.platform.documentlink.api", "OSGI-INF/documentlink-adapter-contrib.xml");
+        deployContrib("org.nuxeo.ecm.platform.documentlink.api", "OSGI-INF/repository-adapter-contrib.xml");
         //deployBundle("org.nuxeo.ecm.platform.documentlink.types");
-        deployContrib("org.nuxeo.ecm.platform.documentlink.types","OSGI-INF/documentlink-types-contrib.xml");
+        deployContrib("org.nuxeo.ecm.platform.documentlink.types", "OSGI-INF/documentlink-types-contrib.xml");
         //deployContrib("org.nuxeo.ecm.platform.documentlink.types","OSGI-INF/content-template-contrib.xml");
         //deployBundle("org.nuxeo.ecm.platform.documentlink.core");
-        deployContrib("org.nuxeo.ecm.platform.documentlink.core","OSGI-INF/documentrepository-framework.xml");
+        deployContrib("org.nuxeo.ecm.platform.documentlink.core", "OSGI-INF/documentrepository-framework.xml");
 
         openRepository();
-
     }
 
-    private void createDocuments() throws Exception {
+    private void createDocuments() throws ClientException {
         DocumentModel wsRoot = coreSession.getDocument(new PathRef(
                 "default-domain/workspaces"));
 
@@ -77,8 +77,7 @@ public class TestDocumentLink extends RepositoryOSGITestCase {
         link = coreSession.createDocument(link);
     }
 
-
-    public void testAdapter() throws Exception {
+    public void testAdapter() throws ClientException {
         createDocuments();
 
         DocumentLinkAdapter adaptedLink = link.getAdapter(DocumentLinkAdapter.class);
@@ -114,12 +113,10 @@ public class TestDocumentLink extends RepositoryOSGITestCase {
         assertFalse(title1.equals(title0));
     }
 
-    public void testAdapterPassThrought() throws Exception {
+    public void testAdapterPassThrought() throws ClientException {
         createDocuments();
 
-        String[] ptschemas = new String[] { "dublincore" };
-
-
+        String[] ptschemas = {"dublincore"};
 
         DocumentLinkAdapter adaptedLink = link.getAdapter(DocumentLinkAdapter.class);
         assertNotNull(adaptedLink);
@@ -135,7 +132,7 @@ public class TestDocumentLink extends RepositoryOSGITestCase {
 
         link.setProperty(DocumentLinkConstants.DOCUMENT_LINK_SCHEMA_NAME,
                 "passthroughtSchemas", ptschemas);
-        String[] ptschemas2 = (String[])link.getProperty(DocumentLinkConstants.DOCUMENT_LINK_SCHEMA_NAME, "passthroughtSchemas");
+        String[] ptschemas2 = (String[]) link.getProperty(DocumentLinkConstants.DOCUMENT_LINK_SCHEMA_NAME, "passthroughtSchemas");
 
         assertEquals(ptschemas, ptschemas2);
 
@@ -144,16 +141,13 @@ public class TestDocumentLink extends RepositoryOSGITestCase {
         dcPart = adaptedLink.getPart("dublincore");
         String targetCoverage = (String) dcPart.get("coverage").getValue();
         assertNotNull(targetCoverage);
-
     }
 
-    public void testHelper() throws Exception
-    {
+    public void testHelper() throws ClientException {
         createDocuments();
 
         DocumentLinkAdapter adaptedLink = DocumentLinkHelper.createDocumentLink(doc, "/");
         assertNotNull(adaptedLink);
-
 
         String linkRef = (String) adaptedLink.getLinkDocument().getProperty(
                 DocumentLinkConstants.DOCUMENT_LINK_SCHEMA_NAME,
@@ -164,21 +158,15 @@ public class TestDocumentLink extends RepositoryOSGITestCase {
                 DocumentLinkConstants.DOCUMENT_LINK_SCHEMA_NAME,
                 DocumentLinkConstants.DOCUMENT_LINK_FIELD_NAME);
         assertEquals(doc.getRef().toString(), linkRef2);
-
-        assertEquals("/"+ adaptedLink.getName(), adaptedLink.getPathAsString());
-
-
+        assertEquals("/" + adaptedLink.getName(), adaptedLink.getPathAsString());
     }
 
-
-    public void testCreateInRepository() throws Exception
-    {
-
+    public void testCreateInRepository() throws ClientException {
         DocumentModel dm = coreSession.createDocumentModel("File");
         dm.setProperty("dublincore", "title", "testme");
 
-        DocumentLinkAdapter adaptedLink =DocumentLinkHelper.createDocumentInCentralRepository(coreSession, dm, "/", "DocumentLink");
-
+        DocumentLinkAdapter adaptedLink = DocumentLinkHelper.createDocumentInCentralRepository(
+                coreSession, dm, "/", "DocumentLink");
         assertNotNull(adaptedLink);
 
         DocRepository repo = DocRepositoryHelper.getDocumentRepository(coreSession);
@@ -188,26 +176,20 @@ public class TestDocumentLink extends RepositoryOSGITestCase {
         assertNotNull(repoDoc);
 
         DocumentModel targetDoc = adaptedLink.getTargetDocument();
-
         assertEquals("testme", targetDoc.getTitle());
-
         assertTrue(targetDoc.getPathAsString().contains(repoDoc.getPathAsString()));
-
         assertFalse(adaptedLink.isBroken());
 
         repo.removeDocument(targetDoc.getRef());
-
         assertTrue(adaptedLink.isBroken());
-
     }
 
-    public void testDoubleLinkAndProxiesListing() throws Exception
-    {
+    public void testDoubleLinkAndProxiesListing() throws ClientException {
         DocumentModel dm = coreSession.createDocumentModel("File");
         dm.setProperty("dublincore", "title", "testme");
 
-        DocumentLinkAdapter adaptedLink =DocumentLinkHelper.createDocumentInCentralRepository(coreSession, dm, "/", "DocumentLink");
-
+        DocumentLinkAdapter adaptedLink = DocumentLinkHelper.createDocumentInCentralRepository(
+                coreSession, dm, "/", "DocumentLink");
         assertNotNull(adaptedLink);
 
         DocRepository repo = DocRepositoryHelper.getDocumentRepository(coreSession);
@@ -217,30 +199,24 @@ public class TestDocumentLink extends RepositoryOSGITestCase {
         assertNotNull(repoDoc);
 
         DocumentModel targetDoc = adaptedLink.getTargetDocument();
-
         assertEquals("testme", targetDoc.getTitle());
-
         assertTrue(targetDoc.getPathAsString().contains(repoDoc.getPathAsString()));
-
         assertFalse(adaptedLink.isBroken());
 
         coreSession.save();
 
         DocumentModelList proxies = repo.getProxiesForDocument(targetDoc.getRef());
-        assertTrue(proxies.size()==1);
+        assertSame(1, proxies.size());
 
-        DocumentLinkAdapter secondLink=DocumentLinkHelper.createDocumentLink(targetDoc, "/");
+        DocumentLinkAdapter secondLink = DocumentLinkHelper.createDocumentLink(targetDoc, "/");
         assertNotNull(secondLink);
         assertFalse(secondLink.isBroken());
-        assertTrue(secondLink.getTargetDocument().getRef().equals(targetDoc.getRef()));
+        assertEquals(secondLink.getTargetDocument().getRef(), targetDoc.getRef());
 
         coreSession.save();
 
         proxies = repo.getProxiesForDocument(targetDoc.getRef());
-        assertTrue(proxies.size()==2);
-
+        assertSame(2, proxies.size());
     }
-
-
 
 }

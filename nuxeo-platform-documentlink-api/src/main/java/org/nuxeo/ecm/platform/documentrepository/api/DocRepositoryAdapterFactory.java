@@ -28,10 +28,9 @@ import org.nuxeo.ecm.core.api.adapter.DocumentAdapterFactory;
 /**
  *
  * Factory for DocRepository adapter.
- * returns a DocRepository on any DocumentModel that has the DocumentRepository facet
+ * Returns a DocRepository on any DocumentModel that has the DocumentRepository facet
  *
  * @author <a href="mailto:td@nuxeo.com">Thierry Delprat</a>
- *
  */
 public class DocRepositoryAdapterFactory implements DocumentAdapterFactory {
 
@@ -40,7 +39,9 @@ public class DocRepositoryAdapterFactory implements DocumentAdapterFactory {
     public Object getAdapter(DocumentModel doc, Class itf) {
         if (doc.hasFacet("DocumentRepository")) {
             return new DocRepositoryImpl(doc);
-        } else
+        } else {
             return null;
+        }
     }
+
 }

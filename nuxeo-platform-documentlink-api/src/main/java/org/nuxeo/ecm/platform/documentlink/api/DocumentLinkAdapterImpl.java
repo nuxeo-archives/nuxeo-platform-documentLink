@@ -628,10 +628,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
      * @see org.nuxeo.ecm.core.api.DocumentModel.hasFacet
      */
     public boolean hasFacet(String facet) {
-        if (getDeclaredFacets().contains(facet)) {
-            return true;
-        }
-        return false;
+        return getDeclaredFacets().contains(facet);
     }
 
     /**
@@ -641,10 +638,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
         if (proxy.hasSchema(schema)) {
             return true;
         }
-        if (target.hasSchema(schema)) {
-            return true;
-        }
-        return false;
+        return target.hasSchema(schema);
     }
 
     /**

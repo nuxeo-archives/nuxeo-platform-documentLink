@@ -22,6 +22,7 @@ package org.nuxeo.ecm.platform.documentlink.tests;
 
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.repository.jcr.testing.RepositoryOSGITestCase;
 import org.nuxeo.ecm.platform.documentrepository.api.DocRepository;
 import org.nuxeo.ecm.platform.documentrepository.api.helper.DocRepositoryHelper;
@@ -36,62 +37,49 @@ public class TestRepository extends RepositoryOSGITestCase {
         deployBundle("org.nuxeo.ecm.platform.types.api");
         deployBundle("org.nuxeo.ecm.platform.types.core");
         //deployBundle("org.nuxeo.ecm.platform.documentlink.api");
-        deployContrib("org.nuxeo.ecm.platform.documentlink.api","OSGI-INF/documentlink-adapter-contrib.xml");
-        deployContrib("org.nuxeo.ecm.platform.documentlink.api","OSGI-INF/repository-adapter-contrib.xml");
+        deployContrib("org.nuxeo.ecm.platform.documentlink.api", "OSGI-INF/documentlink-adapter-contrib.xml");
+        deployContrib("org.nuxeo.ecm.platform.documentlink.api", "OSGI-INF/repository-adapter-contrib.xml");
         //deployBundle("org.nuxeo.ecm.platform.documentlink.types");
-        deployContrib("org.nuxeo.ecm.platform.documentlink.types","OSGI-INF/documentlink-types-contrib.xml");
+        deployContrib("org.nuxeo.ecm.platform.documentlink.types", "OSGI-INF/documentlink-types-contrib.xml");
         //deployContrib("org.nuxeo.ecm.platform.documentlink.types","OSGI-INF/content-template-contrib.xml");
         //deployBundle("org.nuxeo.ecm.platform.documentlink.core");
-        deployContrib("org.nuxeo.ecm.platform.documentlink.core","OSGI-INF/documentrepository-framework.xml");
+        deployContrib("org.nuxeo.ecm.platform.documentlink.core", "OSGI-INF/documentrepository-framework.xml");
         openRepository();
     }
 
-
-    public void testAdapter() throws Exception {
-
+    public void testAdapter() throws ClientException {
         DocumentModel repo = coreSession.createDocumentModel("/", "repository", "Repository");
 
-        repo= coreSession.createDocument(repo);
+        repo = coreSession.createDocument(repo);
 
         coreSession.save();
 
         DocRepository bf = repo.getAdapter(DocRepository.class);
-
         assertNotNull(bf);
 
         DocumentModel doc = bf.createDocument("File", "TestMe");
-
         assertNotNull(doc);
 
         String path = doc.getPathAsString();
-
         String[] subPathParts = path.split("/");
-
         assertEquals(3 + DefaultDocumentRepositoryPlugin.DEFAULT_SUB_PATH_PART_NUMBER,
                 subPathParts.length);
-        System.out.println(path);
+        //System.out.println(path);
     }
 
-    public void testHelper() throws Exception {
-
-
-
+    public void testHelper() throws ClientException {
         DocRepository bf = DocRepositoryHelper.getDocumentRepository(coreSession);
 
         DocumentModel repo = bf.getRepoDoc();
-
         assertEquals(coreSession.getRootDocument().getRef(), repo.getParentRef());
 
         // check doc creation 1
         DocumentModel doc = DocRepositoryHelper.createDocumentInCentralRepository(
                 coreSession, "File", "TestMe");
-
         assertNotNull(doc);
 
         String path = doc.getPathAsString();
-
         String[] subPathParts = path.split("/");
-
         assertEquals(3 + DefaultDocumentRepositoryPlugin.DEFAULT_SUB_PATH_PART_NUMBER,
                 subPathParts.length);
 
@@ -104,32 +92,23 @@ public class TestRepository extends RepositoryOSGITestCase {
         assertNotNull(doc);
 
         path = doc.getPathAsString();
-
         subPathParts = path.split("/");
-
         assertEquals(3 + DefaultDocumentRepositoryPlugin.DEFAULT_SUB_PATH_PART_NUMBER,
                 subPathParts.length);
-
     }
 
-    public void testSeach() throws Exception
-    {
+    public void testSeach() throws ClientException {
         DocRepository bf = DocRepositoryHelper.getDocumentRepository(coreSession);
 
         DocumentModel repo = bf.getRepoDoc();
-
         assertEquals(coreSession.getRootDocument().getRef(), repo.getParentRef());
 
         // check doc creation 1
         DocumentModel doc = DocRepositoryHelper.createDocumentInCentralRepository(
                 coreSession, "File", "TestMe");
-
         assertNotNull(doc);
 
-
         coreSession.save();
-
-
 
         DocumentModel newDoc = coreSession.createDocumentModel("File");
         newDoc.setPathInfo(coreSession.getRootDocument().getPathAsString(), "new");
@@ -137,17 +116,12 @@ public class TestRepository extends RepositoryOSGITestCase {
         newDoc = coreSession.createDocument(newDoc);
         coreSession.save();
 
-
-        String title= doc.getTitle();
-
+        String title = doc.getTitle();
 
         //DocumentModelList docList = coreSession.query("select * from Document where lnk:linkedDocumentRef='" + doc.getRef() + "'");
 
-        DocumentModelList  docList = coreSession.query("select * from Document where dc:title='idxTest'");
-
+        DocumentModelList docList = coreSession.query("select * from Document where dc:title='idxTest'");
         assertNotNull(docList);
-
-
     }
 
 }

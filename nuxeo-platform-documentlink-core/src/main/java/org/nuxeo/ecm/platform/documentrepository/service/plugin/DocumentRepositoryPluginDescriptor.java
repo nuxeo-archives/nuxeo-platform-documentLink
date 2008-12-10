@@ -32,7 +32,6 @@ import org.nuxeo.common.xmap.annotation.XObject;
  * Descriptor class for the plugins for the DocumentRepositortService
  *
  * @author <a href="mailto:td@nuxeo.com">Thierry Delprat</a>
- *
  */
 @XObject(value = "repositoryPlugin")
 public class DocumentRepositoryPluginDescriptor implements Serializable {
@@ -49,14 +48,13 @@ public class DocumentRepositoryPluginDescriptor implements Serializable {
     private Class pluginClass;
 
     @XNode("@resetParams")
-    private boolean resetParams=false;
+    private boolean resetParams = false;
 
     public Class getPluginClass() {
         return pluginClass;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 

@@ -9,10 +9,11 @@ public class DocumentLinkIndexingWrapperFactory implements
 
     public DocumentModel getIndexingWrapper(DocumentModel doc) {
         DocumentLinkAdapter dl = doc.getAdapter(DocumentLinkAdapter.class);
-        if (dl==null)
+        if (dl == null) {
             return doc;
-        else
+        } else {
             return dl;
+        }
     }
 
 }

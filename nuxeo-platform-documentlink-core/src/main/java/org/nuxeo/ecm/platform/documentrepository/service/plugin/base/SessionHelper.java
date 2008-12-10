@@ -40,14 +40,13 @@ import org.nuxeo.runtime.api.Framework;
  */
 public class SessionHelper {
 
-    protected LoginContext lc = null;
+    protected LoginContext lc;
 
     protected CoreSession documentManager;
 
     protected String currentRepositoryName;
 
     public void release() {
-
         releaseCoreSession();
         if (lc != null) {
             try {
@@ -57,7 +56,6 @@ public class SessionHelper {
                 e.printStackTrace();
             }
         }
-
     }
 
     protected void releaseCoreSession() {
@@ -74,7 +72,7 @@ public class SessionHelper {
         if (documentManager == null
                 || !coreRepositoryName.equals(currentRepositoryName)) {
             try {
-                lc = Framework.login();;
+                lc = Framework.login();
             } catch (LoginException e) {
                 throw new ClientException(
                         "Unable to login as System user to get unrestricted CoreSession",
@@ -83,15 +81,12 @@ public class SessionHelper {
 
             RepositoryManager mgr = Framework.getService(RepositoryManager.class);
 
-            if (lc==null)
-            {
+            if (lc == null) {
                 // Unit Tests
                 Map<String, Serializable> ctx = new HashMap<String, Serializable>();
                 ctx.put("username", "system");
                 documentManager = mgr.getRepository(coreRepositoryName).open(ctx);
-            }
-            else
-            {
+            } else {
                 documentManager = mgr.getRepository(coreRepositoryName).open();
             }
 

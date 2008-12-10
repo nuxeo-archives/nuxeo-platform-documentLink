@@ -36,6 +36,8 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -62,9 +64,12 @@ public abstract class AbstractDocumentRepositoryPlugin {
 
     public static final int DEFAULT_SUB_PATH_PART_NUMBER = 4;
 
-    protected static Random randomGen = new Random(System.currentTimeMillis());
+    private static final Log log = LogFactory.getLog(AbstractDocumentRepositoryPlugin.class);
+
+    protected static final Random randomGen = new Random(System.currentTimeMillis());
 
     protected Map<String, String> params = new HashMap<String, String>();
+
 
     public void init(Map<String, String> params) {
         this.params = params;
@@ -102,13 +107,13 @@ public abstract class AbstractDocumentRepositoryPlugin {
     protected List<String> getSubStoragePath(DocumentModel docToStore) throws ClientException {
 
         String token = docToStore.getTitle();
-        String base64HashedToken;
         if (token == null) {
             token = docToStore.getType();
         }
 
         token = token + System.currentTimeMillis() + randomGen.nextLong();
 
+        String base64HashedToken;
         try {
             byte[] hashedToken = MessageDigest.getInstance("MD5").digest(
                     token.getBytes());
@@ -228,23 +233,20 @@ public abstract class AbstractDocumentRepositoryPlugin {
         return doc;
     }
 
-    public DocumentModel createDocument(CoreSession clientSession, DocumentModel repo, String typeName, String title)
-            throws ClientException {
-
+    public DocumentModel createDocument(CoreSession clientSession, DocumentModel repo,
+            String typeName, String title) throws ClientException {
         if (title == null) {
             title = typeName + System.currentTimeMillis();
         }
 
-        DocumentModel dm;
         try {
-            dm = clientSession.createDocumentModel(typeName);
+            DocumentModel dm = clientSession.createDocumentModel(typeName);
             dm.setProperty("dublincore", "title", title);
             return createDocument(clientSession, repo,dm);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e);
             throw new ClientException("Unable to create DocumentModel",e);
         }
-
     }
 
     public DocumentModel createDocument(CoreSession clientSession,DocumentModel repo, DocumentModel doc)
@@ -270,7 +272,6 @@ public abstract class AbstractDocumentRepositoryPlugin {
         } catch (Exception e) {
             throw new ClientException("Unable to create Document in repository",e);
         }
-
     }
 
 }
