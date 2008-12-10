@@ -99,16 +99,15 @@ public abstract class AbstractDocumentRepositoryPlugin {
         return DEFAULT_SUB_PATH_PART_NUMBER;
     }
 
-    protected List<String> getSubStoragePath(DocumentModel docToStore) {
+    protected List<String> getSubStoragePath(DocumentModel docToStore) throws ClientException {
 
         String token = docToStore.getTitle();
-        String base64HashedToken = null;
+        String base64HashedToken;
         if (token == null) {
             token = docToStore.getType();
         }
 
         token = token + System.currentTimeMillis() + randomGen.nextLong();
-        ;
 
         try {
             byte[] hashedToken = MessageDigest.getInstance("MD5").digest(
@@ -143,8 +142,8 @@ public abstract class AbstractDocumentRepositoryPlugin {
 
         String coreRepositoryName = repo.getRepositoryName();
 
-        boolean createNewPath = false;
         try {
+            boolean createNewPath = false;
             for (String part : parts) {
                 String parentPath = storagePath.toString();
                 storagePath = storagePath.append(part);
@@ -163,7 +162,7 @@ public abstract class AbstractDocumentRepositoryPlugin {
             }
             helper.getUnrestrictedDocumentManager(coreRepositoryName).save();
         } catch (Exception e) {
-            throw new ClientException("Error whil checking storage path", e);
+            throw new ClientException("Error while checking storage path", e);
         }
         return storagePath.toString();
     }
@@ -176,7 +175,7 @@ public abstract class AbstractDocumentRepositoryPlugin {
         try {
             return getAndCheckStoragePath(repo, docToStore, helper);
         } catch (Exception e) {
-            throw new ClientException("Error whil checking storage path", e);
+            throw new ClientException("Error while checking storage path", e);
         } finally {
             helper.release();
         }

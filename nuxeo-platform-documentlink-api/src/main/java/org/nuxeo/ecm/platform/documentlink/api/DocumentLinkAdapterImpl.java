@@ -64,9 +64,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
 
     protected DocumentModel target;
 
-
-    protected String adapter_sid=null;
-
+    protected String adapter_sid;
 
     /**
      * Constructs an Adapter given a link documentModel
@@ -75,25 +73,27 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
      * @throws DocumentLinkException
      */
     public DocumentLinkAdapterImpl(DocumentModel proxy)
-            throws DocumentLinkException {
+            throws ClientException {
         this.proxy = proxy;
 
-        if (getSessionId()!=null)
-            this.target = resolveTargetDocument(proxy);
+        if (getSessionId()!=null) {
+            target = resolveTargetDocument(proxy);
+        }
     }
 
     /**
-     * Constructs an Adapter given a link documentModel and a target documentModel
+     * Constructs an Adapter given a link documentModel and a target documentModel.
+     *
      * @param proxy
      * @param target
      */
-    public DocumentLinkAdapterImpl(DocumentModel proxy, DocumentModel target) {
+    public DocumentLinkAdapterImpl(DocumentModel proxy, DocumentModel target) throws ClientException {
         this.proxy = proxy;
         setTargetDocument(target);
     }
 
     protected DocumentModel resolveTargetDocument(DocumentModel proxy)
-            throws DocumentLinkException {
+            throws ClientException {
 
         String ref = (String) proxy.getProperty(
                 DocumentLinkConstants.DOCUMENT_LINK_SCHEMA_NAME,
@@ -132,9 +132,8 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see DocumentLinkAdapter.getUnmaskedSchemas
      */
-    public List<String> getUnmaskedSchemas()
-    {
-        List<String>  unmaskedSchemas = new ArrayList<String>();
+    public List<String> getUnmaskedSchemas() throws ClientException {
+        List<String> unmaskedSchemas = new ArrayList<String>();
 
         unmaskedSchemas.addAll(Arrays.asList(target.getDeclaredSchemas()));
         unmaskedSchemas.removeAll(Arrays.asList(proxy.getDeclaredSchemas()));
@@ -146,39 +145,37 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see DocumentLinkAdapter.getPassThoughtSchemas
      */
-    public List<String> getPassThoughtSchemas()
-    {
-        String [] schemas = (String []) proxy.getProperty(
-                DocumentLinkConstants.DOCUMENT_LINK_SCHEMA_NAME,"passthroughtSchemas");
-        if (schemas==null)
+    public List<String> getPassThoughtSchemas() throws ClientException {
+        String[] schemas = (String[]) proxy.getProperty(
+                DocumentLinkConstants.DOCUMENT_LINK_SCHEMA_NAME, "passthroughtSchemas");
+        if (schemas == null) {
             return new ArrayList<String>();
+        }
 
         return Arrays.asList(schemas);
     }
 
 
-    public void reconnect(String sid) throws DocumentLinkException
-    {
-        adapter_sid=sid;
-        this.target = resolveTargetDocument(proxy);
+    public void reconnect(String sid) throws ClientException {
+        adapter_sid = sid;
+        target = resolveTargetDocument(proxy);
     }
 
-    public DocumentLinkAdapter save() throws ClientException
-    {
+    public DocumentLinkAdapter save() throws ClientException {
         return save(false);
     }
 
     /**
      * @see DocumentLinkAdapter.save
      */
-    public DocumentLinkAdapter save(Boolean skipTarget) throws ClientException
-    {
+    public DocumentLinkAdapter save(Boolean skipTarget) throws ClientException {
         String sid = getSessionId();
         CoreSession session = CoreInstance.getInstance().getSession(sid);
 
         proxy = session.saveDocument(proxy);
-        if (!skipTarget)
+        if (!skipTarget) {
             target = session.saveDocument(target);
+        }
 
         // XXX : need to set "this" as adapter on proxy !!!
 
@@ -188,8 +185,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see DocumentLinkAdapter.getCanWriteOnTargetDocument
      */
-    public boolean getCanWriteOnTargetDocument() throws ClientException
-    {
+    public boolean getCanWriteOnTargetDocument() throws ClientException {
         String sid = getSessionId();
         CoreSession session = CoreInstance.getInstance().getSession(sid);
 
@@ -200,8 +196,9 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
      * @see DocumentLinkAdapter.isBroken
      */
     public boolean isBroken() {
-        if (target == null)
+        if (target == null) {
             return true;
+        }
         String sid = getSessionId();
         try {
             return !CoreInstance.getInstance().getSession(sid).exists(
@@ -214,7 +211,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see DocumentLinkAdapter.setTargetDocument
      */
-    public void setTargetDocument(DocumentModel target) {
+    public void setTargetDocument(DocumentModel target) throws ClientException {
         proxy.setProperty(DocumentLinkConstants.DOCUMENT_LINK_SCHEMA_NAME,
                 DocumentLinkConstants.DOCUMENT_LINK_FIELD_NAME,
                 target.getRef().toString());
@@ -236,8 +233,6 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
         return target;
     }
 
-
-
     // DocumentModel Interface implementation
 
     /**
@@ -250,7 +245,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.copyContent
      */
-    public void copyContent(DocumentModel sourceDoc) {
+    public void copyContent(DocumentModel sourceDoc) throws ClientException {
         proxy.copyContent(sourceDoc);
     }
 
@@ -271,7 +266,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.getACP
      */
-    public ACP getACP() {
+    public ACP getACP() throws ClientException {
         return proxy.getACP();
     }
 
@@ -304,7 +299,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.getCacheKey
      */
-    public String getCacheKey() {
+    public String getCacheKey() throws ClientException {
         return proxy.getCacheKey();
     }
 
@@ -339,7 +334,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.getDataModel
      */
-    public DataModel getDataModel(String schema) {
+    public DataModel getDataModel(String schema) throws ClientException {
         DataModel dm = proxy.getDataModel(schema);
         if (dm == null || getPassThoughtSchemas().contains(schema)) {
             dm = target.getDataModel(schema);
@@ -440,7 +435,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.getPart
      */
-    public DocumentPart getPart(String schema) {
+    public DocumentPart getPart(String schema) throws ClientException {
         DocumentPart dp = proxy.getPart(schema);
         if (dp == null || getPassThoughtSchemas().contains(schema)) {
             dp = target.getPart(schema);
@@ -451,7 +446,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.getParts
      */
-    public DocumentPart[] getParts() {
+    public DocumentPart[] getParts() throws ClientException {
         DocumentPart[] proxyParts = proxy.getParts();
         DocumentPart[] targetParts = target.getParts();
 
@@ -492,10 +487,9 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.getProperties
      */
-    public Map<String, Object> getProperties(String schemaName) {
+    public Map<String, Object> getProperties(String schemaName) throws ClientException {
         Map<String, Object> props = target.getProperties(schemaName);
-        if (getPassThoughtSchemas().contains(schemaName))
-        {
+        if (getPassThoughtSchemas().contains(schemaName)) {
             props.putAll(proxy.getProperties(schemaName));
         }
         return props;
@@ -504,7 +498,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.getProperty
      */
-    public Property getProperty(String xpath) throws PropertyException {
+    public Property getProperty(String xpath) throws ClientException {
 
         Property prop = null;
 
@@ -523,11 +517,12 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.getProperty
      */
-    public Object getProperty(String schemaName, String name) {
+    public Object getProperty(String schemaName, String name) throws ClientException {
 
         // always return the icon of the target doc
-        if (schemaName.equals("common") && name.equals("icon"))
+        if (schemaName.equals("common") && name.equals("icon")) {
             return target.getProperty("common", "icon");
+        }
 
         Object prop = proxy.getProperty(schemaName, name);
         if (prop == null || getPassThoughtSchemas().contains(schemaName)) {
@@ -539,10 +534,10 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.getPropertyValue
      */
-    public Serializable getPropertyValue(String xpath) throws PropertyException {
+    public Serializable getPropertyValue(String xpath) throws ClientException {
         Serializable propValue = null;
         try  {
-            propValue=  proxy.getPropertyValue(xpath);
+            propValue = proxy.getPropertyValue(xpath);
         }
         catch (PropertyException e) {
             // ignore and try again
@@ -572,8 +567,9 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
      * @see org.nuxeo.ecm.core.api.DocumentModel.getSessionId
      */
     public String getSessionId() {
-        if (adapter_sid!=null)
+        if (adapter_sid!=null) {
             return adapter_sid;
+        }
 
         adapter_sid = proxy.getSessionId();
 
@@ -602,7 +598,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.getTitle
      */
-    public String getTitle() {
+    public String getTitle() throws ClientException {
         String title = (String) getProperty("dublincore", "title");
         if (title != null) {
             return title;
@@ -632,8 +628,9 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
      * @see org.nuxeo.ecm.core.api.DocumentModel.hasFacet
      */
     public boolean hasFacet(String facet) {
-        if (getDeclaredFacets().contains(facet))
+        if (getDeclaredFacets().contains(facet)) {
             return true;
+        }
         return false;
     }
 
@@ -641,17 +638,19 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
      * @see org.nuxeo.ecm.core.api.DocumentModel.hasSchema
      */
     public boolean hasSchema(String schema) {
-        if (proxy.hasSchema(schema))
+        if (proxy.hasSchema(schema)) {
             return true;
-        if (target.hasSchema(schema))
+        }
+        if (target.hasSchema(schema)) {
             return true;
+        }
         return false;
     }
 
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.isDownloadable
      */
-    public boolean isDownloadable() {
+    public boolean isDownloadable() throws ClientException {
         return proxy.isDownloadable();
     }
 
@@ -742,7 +741,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.setACP
      */
-    public void setACP(ACP acp, boolean overwrite) {
+    public void setACP(ACP acp, boolean overwrite) throws ClientException {
         proxy.setACP(acp, overwrite);
     }
 
@@ -763,7 +762,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.setProperties
      */
-    public void setProperties(String schemaName, Map<String, Object> data) {
+    public void setProperties(String schemaName, Map<String, Object> data) throws ClientException {
         if (proxy.hasSchema(schemaName) && !getPassThoughtSchemas().contains(schemaName)) {
             proxy.setProperties(schemaName, data);
         } else if (target.hasSchema(schemaName)) {
@@ -774,7 +773,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
     /**
      * @see org.nuxeo.ecm.core.api.DocumentModel.setProperty
      */
-    public void setProperty(String schemaName, String name, Object value) {
+    public void setProperty(String schemaName, String name, Object value) throws ClientException {
         if (proxy.hasSchema(schemaName) && !getPassThoughtSchemas().contains(schemaName)) {
             proxy.setProperty(schemaName, name, value);
         } else if (target.hasSchema(schemaName)) {
@@ -786,7 +785,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
      * @see org.nuxeo.ecm.core.api.DocumentModel.setPropertyValue
      */
     public void setPropertyValue(String xpath, Serializable value)
-            throws PropertyException {
+            throws ClientException {
         try {
             proxy.setPropertyValue(xpath, value);
         } catch (PropertyException e) {

@@ -51,7 +51,7 @@ public interface DocumentLinkAdapter extends DocumentModel {
      *
      * @param target the new target document
      */
-    void setTargetDocument(DocumentModel target);
+    void setTargetDocument(DocumentModel target) throws ClientException;
 
     /**
      * Checks if the link is broken.
@@ -92,14 +92,14 @@ public interface DocumentLinkAdapter extends DocumentModel {
      *
      * @return the pass thought schemas
      */
-    List<String> getPassThoughtSchemas();
+    List<String> getPassThoughtSchemas() throws ClientException;
 
     /**
      * Return the list of schemas that are implemented by the target document but not by the link document.
      *
      * @return the unmasked schemas
      */
-    List<String> getUnmaskedSchemas();
+    List<String> getUnmaskedSchemas() throws ClientException;
 
     /**
      * Check if user has write access on the target document
@@ -117,6 +117,6 @@ public interface DocumentLinkAdapter extends DocumentModel {
      * @param sid
      * @throws DocumentLinkException
      */
-    public void reconnect(String sid) throws DocumentLinkException;
+    public void reconnect(String sid) throws ClientException;
 
 }

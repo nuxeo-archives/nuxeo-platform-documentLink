@@ -23,13 +23,14 @@ package org.nuxeo.ecm.platform.documentlink.api;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.adapter.DocumentAdapterFactory;
+
 /**
- *
  * Factory for DocumentLinkAdapter.
  * Returns an adapter on any DocumentModel that has the documentLink schema.
- *  @author <a href="mailto:td@nuxeo.com">Thierry Delprat</a>
  *
+ * @author <a href="mailto:td@nuxeo.com">Thierry Delprat</a>
  */
 public class DocumentLinkAdapterFactory implements DocumentAdapterFactory {
 
@@ -37,17 +38,19 @@ public class DocumentLinkAdapterFactory implements DocumentAdapterFactory {
 
     public Object getAdapter(DocumentModel doc, Class itf) {
 
-        if (doc.hasSchema(DocumentLinkConstants.DOCUMENT_LINK_SCHEMA_NAME))
-        {
+        if (doc.hasSchema(DocumentLinkConstants.DOCUMENT_LINK_SCHEMA_NAME)) {
             try {
                 return new DocumentLinkAdapterImpl(doc);
             } catch (DocumentLinkException e) {
-               log.error("Error while creating DocumentLink adapter", e);
-               return null;
+                log.error("Error while creating DocumentLink adapter", e);
+                return null;
+            } catch (ClientException e) {
+                log.error("Error while creating DocumentLink adapter", e);
+                return null;
             }
-        }
-        else
+        } else {
             return null;
+        }
     }
 
 }

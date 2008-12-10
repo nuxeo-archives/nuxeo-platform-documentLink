@@ -66,15 +66,12 @@ public class DocumentLinkHelper {
         return createDocumentLink(null, target, path, null);
     }
 
-
     public static DocumentLinkAdapter createDocumentLink(
             CoreSession documentManager, DocumentModel target, String path,
             String DocumentLinkType) throws ClientException {
 
         return createDocumentLink(documentManager,target,path,DocumentLinkType, true);
     }
-
-
 
     /**
      * Creates a DocumentLink documentModel pointing to the target DocumentModel.
@@ -95,8 +92,9 @@ public class DocumentLinkHelper {
                     target.getSessionId());
         }
 
-        if (DocumentLinkType == null)
+        if (DocumentLinkType == null) {
             DocumentLinkType = "DocumentLink";
+        }
 
         String link_id = target.getName() + "_lnk";
 
@@ -105,8 +103,9 @@ public class DocumentLinkHelper {
 
         DocumentLinkAdapter docLink = link.getAdapter(DocumentLinkAdapter.class);
 
-        if (docLink == null)
+        if (docLink == null) {
             return null;
+        }
 
         docLink.setTargetDocument(target);
 
@@ -141,8 +140,9 @@ public class DocumentLinkHelper {
                     doc.getSessionId());
         }
 
-        if (DocumentLinkType == null)
+        if (DocumentLinkType == null) {
             DocumentLinkType = "DocumentLink";
+        }
 
         DocumentModel target = DocRepositoryHelper.createDocumentInCentralRepository(
                 documentManager, doc);
@@ -150,9 +150,8 @@ public class DocumentLinkHelper {
         return createDocumentLink(documentManager, target, linkPath,DocumentLinkType,true);
     }
 
-
     // duplicated from DocumentModelFunction to avoid dependency
-    protected static String iconPath(DocumentModel document) {
+    protected static String iconPath(DocumentModel document) throws ClientException {
         String iconPath = "";
         if (document != null) {
             iconPath = (String) document.getProperty("common", "icon");
@@ -166,4 +165,5 @@ public class DocumentLinkHelper {
         }
         return iconPath;
     }
+
 }
