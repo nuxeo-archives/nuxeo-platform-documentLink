@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.nuxeo.ecm.platform</groupId>
     <artifactId>nuxeo-platform-parent</artifactId>
-    <version>5.1.6-SNAPSHOT</version>
+    <version>5.1.7-SNAPSHOT</version>
   </parent>
 
   <artifactId>nuxeo-platform-documentlink-parent</artifactId>
@@ -14,11 +14,11 @@
   <description>
     Parent package for the application level document proxy service
   </description>
-  <version>5.1.6-SNAPSHOT</version>
+  <version>5.1.7-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
-    <nuxeo.doc.link.version>5.1.6-SNAPSHOT</nuxeo.doc.link.version>
+    <nuxeo.doc.link.version>5.1.7-SNAPSHOT</nuxeo.doc.link.version>
   </properties>
 
   <modules>
