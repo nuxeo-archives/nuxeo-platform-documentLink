@@ -40,7 +40,6 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.platform.documentlink.api.DocumentLinkAdapter;
 import org.nuxeo.ecm.platform.documentlink.api.helper.DocumentLinkHelper;
 import org.nuxeo.ecm.platform.forms.layout.service.WebLayoutManager;
-import org.nuxeo.ecm.platform.types.TypeManager;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 import org.nuxeo.ecm.webapp.base.InputController;
 import org.nuxeo.runtime.api.Framework;
@@ -56,9 +55,6 @@ public class DocumentLinkActionBean extends InputController implements Serializa
 
     @In(create = true, required = false)
     private transient CoreSession documentManager;
-
-    @In(required = true)
-    private transient TypeManager typeManager;
 
     private transient WebLayoutManager layoutManager;
 
