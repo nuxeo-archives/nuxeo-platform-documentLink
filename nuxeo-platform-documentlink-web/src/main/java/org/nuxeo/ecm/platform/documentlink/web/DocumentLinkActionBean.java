@@ -39,7 +39,6 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.platform.documentlink.api.DocumentLinkAdapter;
 import org.nuxeo.ecm.platform.documentlink.api.helper.DocumentLinkHelper;
-import org.nuxeo.ecm.platform.ejb.EJBExceptionHandler;
 import org.nuxeo.ecm.platform.forms.layout.service.WebLayoutManager;
 import org.nuxeo.ecm.platform.types.TypeManager;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
@@ -121,7 +120,7 @@ public class DocumentLinkActionBean extends InputController implements Serializa
             return navigationContext.navigateToDocument(docLink,
                     "after-edit");
         } catch (Throwable t) {
-            throw EJBExceptionHandler.wrapException(t);
+            throw ClientException.wrap(t);
         }
     }
 

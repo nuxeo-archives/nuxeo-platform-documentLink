@@ -126,7 +126,7 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
         }
     }
 
-    // specifc interafce impl
+    // specific interface impl
 
 
     /**
@@ -801,6 +801,14 @@ public class DocumentLinkAdapterImpl implements DocumentLinkAdapter {
 
     public void refresh() throws ClientException {
         proxy.refresh();
+    }
+
+    public CoreSession getCoreSession() {
+        String sessionId = getSessionId();
+        if (sessionId == null) {
+            return null;
+        }
+        return CoreInstance.getInstance().getSession(sessionId);
     }
 
 }
