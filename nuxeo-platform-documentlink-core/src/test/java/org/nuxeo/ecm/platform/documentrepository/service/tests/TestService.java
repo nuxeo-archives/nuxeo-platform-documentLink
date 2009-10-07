@@ -35,6 +35,7 @@ public class TestService extends RepositoryOSGITestCase {
         // check repo creation and security settings
         DocumentModel doc = coreSession.createDocumentModel("/", "testFile","File");
         doc=coreSession.createDocument(doc);
+        coreSession.save();
         String creator1 = (String)doc.getProperty("dublincore", "creator");
         assertEquals("Administrator", creator1);
 
