@@ -25,7 +25,6 @@
     <module>nuxeo-platform-documentlink-types</module>
     <module>nuxeo-platform-documentlink-core</module>
     <module>nuxeo-platform-documentlink-web</module>
-    <module>nuxeo-platform-documentlink-facade</module>
     <module>nuxeo-platform-documentlink-tests</module>
   </modules>
 
