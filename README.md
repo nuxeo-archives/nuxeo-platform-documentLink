@@ -2,16 +2,16 @@
 
 ## Table of Contents
 
-1. Overview
-1. How does it work
-1. DocumentLink and Repository
-1. Using DocumentLink
-1. Using the adapter
-1. Using the DocRepository
+1. [Overview](#Overview)
+1. [How does it work](#How)
+1. [DocumentLink and Repository](#DocumentLinkAndRepo)
+1. [Using DocumentLink](#UsingDocumentLink)
+1. [Using the adapter](#UsingAdpater)
+1. [Using the DocRepository](#UsingDocumentRepo)
 
 The *nuxeo-platform-documentLink* addon provides services, and adapters to handle "application level" proxies pointing to DocumentModels.
 
-## Overview
+## <a id="Overview"></a> Overview 
 
 There are several use cases that require having the same document available from several places. Typical use cases include publication (same document visible in multiple sections), personal workspaces (user want to have some document into his workspace without copying them) ... Nuxeo Core provides a build-in feature called Proxies that can be used in most cases. The current limitations of proxy system in Nuxeo Core 1.4.x include :
 
@@ -29,7 +29,7 @@ DocumentLink provides a proxy system implementation on top of the Core using the
 
 As an example, if you have a DocumentModel DocA with title "Document A" and description "description A", you can create a DocumentLink DLA that will point to DocA and have title "DocLink A" but will always return the description contained in DocA.
 
-## How does it work
+## <a id="How"></a> How does it work
 
 The DocumentLink system uses DocumentModelAdapter to adapt the default DocumentModel implementation to a specific implementation that handles the logic for dispatching attributes access across the DocumentLink and the target Document.
 
@@ -55,7 +55,7 @@ This means that for this schema the DocumentLink will always return the values s
 
 The DocumentLink package also provides a indexing wrapper that will be used during indexing. This allows the DocumentLink to be indexed as expected.
 
-## DocumentLink and Repository
+## <a id="DocumentLinkAndRepo"></a> DocumentLink and Repository
 
 In implementation projects using DocumentLink, we usually don't really care to know where the real (target) DocumentModel will be stored, because the user will probably always manipulate the DocumentModel through DocumentLinks.
 
@@ -71,7 +71,7 @@ The repository storage is pluggable so you can define :
 
 * how rights are set
 
-## Using DocumentLink
+## <a id="UsingDocumentLink"></a> Using DocumentLink
 
 In order to use DocumentLink feature you need to install the nuxeo-platform-documenntlink packages into your nuxeo. For that, just copy the jars into nuxeo.ear/plugins and restart your server.
 
@@ -81,7 +81,7 @@ One of the DocumentLink package is dedicated to unit tests (nuxeo-platform-docum
 
 Nevertheless, here are some simple examples :
 
-## Using the adapter
+## <a id="UsingAdpater"></a> Using the adapter
 
 The DocumentLinkAdapter is available on any DocumentModel that has the DocumentLink Schema. Using the adapter you can define the target DocumentModel and the masked schemas, but you can also have a full access to the DocumentModel API .
 
@@ -123,7 +123,7 @@ The DocumentLinkAdapter is available on any DocumentModel that has the DocumentL
     // DocumentLink do not return the title of the target since it's overridden
     assertFalse(title1.equals(title0));
 
-## Using the DocRepository
+## <a id="UsingDocumentRepo"></a> Using the DocRepository
 
 DocumentLink provides static helpers to help you create DocumentLinks and use the DocRepository.
     
