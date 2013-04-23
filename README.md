@@ -2,12 +2,12 @@
 
 ## Table of Contents
 
-1. [Overview](#-overview)
-1. [How does it work](#-how-does-it-work)
-1. [DocumentLink and Repository](#-documentlink-and-repository)
-1. [Using DocumentLink](#-using-documentlink)
-1. [Using the adapter](#-using-the-adapter)
-1. [Using the DocRepository](#-using-the-docrepository)
+1. [Overview](#overview)
+1. [How does it work](#how-does-it-work)
+1. [DocumentLink and Repository](#documentlink-and-repository)
+1. [Using DocumentLink](#using-documentlink)
+1. [Using the adapter](#using-the-adapter)
+1. [Using the DocRepository](#using-the-docrepository)
 
 The *nuxeo-platform-documentLink* addon provides services, and adapters to handle "application level" proxies pointing to DocumentModels.
 
