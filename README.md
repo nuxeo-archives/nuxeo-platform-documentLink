@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-1. [Overview]( Overview)
+1. Overview
 1. How does it work
 1. DocumentLink and Repository
 1. Using DocumentLink
