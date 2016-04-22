@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: DocumentLink Services facade
-Bundle-SymbolicName: org.nuxeo.ecm.platform.documentlink.facade
-Bundle-Vendor: Nuxeo
-Bundle-Version: 1.0.0
-Require-Bundle: org.nuxeo.ecm.platform.documentlink.api,
- org.nuxeo.ecm.platform.documentlink.core
-Nuxeo-Component: OSGI-INF/documentlink-platform-contrib.xml

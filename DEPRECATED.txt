@@ -1,0 +1,3 @@
+This addon is deprecated since 5.2
+It provided services and adapters to handle "application level" proxies pointing to DocumentModels.
+Its features have been integrated to Nuxeo Core
